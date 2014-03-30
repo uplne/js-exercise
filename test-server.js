@@ -10,7 +10,7 @@ module.exports = function(options) {
         app.use('/tests', express.static('./tests'));
     });
 
-    site.get("/", function(req, res) {
+    app.get("/", function(req, res) {
         fs.createReadStream('./tests/runner.html').pipe(res);
     });
 

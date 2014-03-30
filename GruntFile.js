@@ -25,30 +25,8 @@ module.exports = function(grunt) {
         '*/\n',
 
         dir: {
-            js: 'static/js',
-            css: 'static/css',
-            sass: 'static/sass',
-            img: 'static/images',
-            views: 'static/views'
-        },
-
-        /**
-        * Compress .jpg/.png
-        * @github.com/gruntjs/grunt-contrib-imagemin
-        */
-        imagemin: {
-          dist: {
-            options: {
-                optimizationLevel: 3,
-                progressive: true
-            },
-            files: [{
-              expand: true, // Enable dynamic expansion.
-              cwd: '<%= dir.img %>/', // Src matches are relative to this path.
-              src: '{,*/}*.{png,jpg,jpeg}', // Actual pattern(s) to match.
-              dest: '<%= dir.img %>/' // Destination path prefix.
-            }]
-          }
+            exams: 'exams',
+            test: 'tests'
         },
 
         /**
@@ -61,22 +39,6 @@ module.exports = function(grunt) {
           options: {
             jshintrc: '.jshintrc'
           }
-        },
-
-        /**
-        * Concatenate
-        * @github.com/gruntjs/grunt-contrib-concat
-        */
-        concat: {
-          options: {
-            stripBanners: true,
-            banner: '<%= banner %>'
-          },
-
-          js: {
-            src: '<%= jshint.files %>',
-            dest: '<%= dir.js %>/<%= pkg.name %>.js'
-          },
         },
 
         // Server side unit tests
@@ -92,88 +54,8 @@ module.exports = function(grunt) {
             }
         },
 
-        /**
-         * Compile SASS
-         */
-        sass: {
-            dev: {
-                options: {
-                    style: 'expanded',
-                    trace: true,
-                    debugInfo: true
-                },
-                expand: true,
-                cwd: '<%= dir.sass %>/',
-                src: ['*.scss', '!_*.scss'],
-                dest: '<%= dir.css %>',
-                ext: '.css'
-            },
-            build: {
-                options: {
-                    style: 'compressed',
-                    noCache: true
-                },
-                expand: true,
-                cwd: '<%= dir.sass %>/',
-                src: ['*.scss', '!_*.scss'],
-                dest: '<%= dir.css %>',
-                ext: '.css'
-            }
-        },
-
-        /**
-        * Minify
-        * @github.com/gruntjs/grunt-contrib-uglify
-        */
-        uglify: {
-
-          // Uglify options
-          options: {
-            banner: '<%= banner %>'
-          },
-
-          // Minify js files in static/js/
-          dist: {
-            src: ['<%= concat.js.dest %>'],
-            dest: '<%= dir.js %>/<%= pkg.name %>.min.js'
-          },
-        },
-
-        autoprefixer: {
-            dev: {
-                options: {
-                    browsers: ['last 2 versions', 'ie 8', 'ie 9']
-                },
-                expand: true,
-                flatten: true,
-                src: '<%= dir.css %>/*.css',
-                dest: '<%= dir.css %>/'
-            }
-        },
-
         // The watch command watches a given set of files and runs a task when one of them changes.
         watch: {
-
-            // JShint Gruntfile
-            gruntfile: {
-                files: 'Gruntfile.js',
-                tasks: ['jshint:gruntfile'],
-            },
-
-            //Automatic compilation of SASS changes
-            sass: {
-                files: ['<%= dir.sass %>/**/*.scss'],
-                tasks: ['sass:dev', 'notify:sass']
-            },
-
-            // Add vendor prefixes
-            prefix: {
-                files: ['<%= dir.sass %>/**/*.scss'],
-                tasks: ['autoprefixer:dev', 'notify:prefix'],
-                options: {
-                    livereload: true
-                }
-            },
 
             server: {
                 files: ['.rebooted'],
@@ -188,9 +70,8 @@ module.exports = function(grunt) {
              */
             livereload: {
                 files: [
-                    '<%= dir.img %>/*.{png,jpg,gif,svg}',
-                    '<%= dir.js %>/**/*.js',
-                    '<%= dir.views %>/**/*.hbs'
+                    '<%= dir.exams %>/**/*.js',
+                    '<%= dir.tests %>/**/*.js'
                 ],
                 options: {
                     livereload: true
@@ -248,52 +129,16 @@ module.exports = function(grunt) {
                     logConcurrentOutput: true
                 }
             }
-        },
-
-        notify: {
-            dev: {
-                options: {
-                    message: "Dev changes complete."
-                }
-            },
-
-            build: {
-                options: {
-                    message: "Build complete."
-                }
-            },
-
-            sass: {
-                options: {
-                    message: "SASS compiled."
-                }
-            },
-
-            prefix: {
-                options: {
-                    message: "Autoprefixer finished."
-                }
-            }
         }
     });
 
-    grunt.registerTask('test-unit', 'Run unit tests - mocha', [
-        'mochacli:unit'
-    ]);
+    grunt.registerTask('server-start', 'Start test server', function() {
+        var server = require('./test-server.js');
 
-    grunt.registerTask('dev', [
-        'concurrent:dev',
-        'notify:dev'
-    ]);
+        server({
+            port: 2012
+        });
+    });
 
-    grunt.registerTask('prefix', ['autoprefixer:dev']);
-
-    grunt.registerTask('build', [
-        'jshint',
-        'concat:js',
-        'uglify',
-        'sass:build',
-        'imagemin',
-        'notify:build'
-    ]);
+    grunt.registerTask('test', ['server-start', 'watch']);
 };
