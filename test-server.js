@@ -8,6 +8,9 @@ module.exports = function(options) {
         app.use(express.bodyParser());
         app.use('/exams', express.static('./exams'));
         app.use('/tests', express.static('./tests'));
+        app.use('/node_modules', express.static('./node_modules'));
+        app.use('/lib', express.static('./lib'));
+        app.use('/config', express.static('./config'));
     });
 
     app.get("/", function(req, res) {

@@ -4,14 +4,13 @@ var tests = [
 
 var requirejs = require('requirejs');
 
-    requirejs.config({
-        baseUrl : __dirname + '/../',
-        nodeRequire : require,
-        paths : {
-            jquery : 'lib/jquery'
-        }
-    });
-}
+requirejs.config({
+    baseUrl : __dirname + '/../',
+    nodeRequire : require,
+    paths : {
+        jquery : 'lib/jquery'
+    }
+});
 
 requirejs(tests, function() {
     if (typeof mocha !== 'undefined') {
