@@ -4,7 +4,7 @@
  */
 module.exports = function(grunt) {
 
-    // load all grunt tasks
+    // Load all grunt tasks
     require('matchdep').filterDev(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks);
 
     grunt.initConfig({
@@ -13,6 +13,17 @@ module.exports = function(grunt) {
         * Read package.json
         */
         pkg: grunt.file.readJSON('package.json'),
+
+        // Default directories
+        dir: {
+            exams: 'exams',
+            test: 'tests'
+        },
+
+        // Default options
+        opts: {
+            port: '2012'
+        },
 
         /**
         * Set banner
@@ -23,11 +34,6 @@ module.exports = function(grunt) {
         'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
         'License: Enjoy. Live long and prosper.\n' +
         '*/\n',
-
-        dir: {
-            exams: 'exams',
-            test: 'tests'
-        },
 
         /**
         * JSHint
@@ -89,7 +95,7 @@ module.exports = function(grunt) {
                 options: {
                     nodeArgs: ['--debug'],
                     env: {
-                        PORT: '1985'
+                        PORT: '<%= opts.port %>'
                     },
                     // omit this property if you aren't serving HTML files and
                     // don't want to open a browser tab on start
@@ -116,7 +122,7 @@ module.exports = function(grunt) {
 
         open: {
             dev: {
-              path: 'http://localhost:1985',
+              path: 'http://localhost:<%= opts.port %>',
               app: 'Google Chrome'
             }
         },
@@ -140,5 +146,5 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask('test', ['server-start', 'watch']);
+    grunt.registerTask('test', ['server-start', 'concurrent:dev']);
 };
