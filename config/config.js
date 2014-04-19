@@ -1,13 +1,23 @@
+'use strict';
+
+var specs = [
+  'tests/specs/arrays'
+];
+
 require.config({
-    deps : [ 'tests/runner' ],
+    baseUrl: '/',
+    paths: {
+        jquery: 'lib/jquery'
+    },
+    shim: {
+        jquery: {
+            exports: '$'
+        }
+    }
+});
 
-    paths : {
-        // JavaScript folders
-        lib : '../lib',
-        tests : '../tests',
-        exams : '../exams',
-
-        // Libraries
-        jquery : '../lib/jquery'
+require(specs, function() {
+    if (typeof mocha !== 'undefined') {
+      mocha.run();
     }
 });

@@ -1,18 +1,35 @@
-var tests = [
+/*requirejs.config({
+    baseUrl: __dirname + '/../',
+    paths: {
+        jquery : 'lib/jquery'
+    }
+});*/
+
+/*requirejs(tests, function() {
+    if (typeof mocha !== 'undefined') {
+      mocha.run();
+    }
+});*/
+
+'use strict';
+
+var specs = [
   'tests/specs/arrays'
 ];
 
-var requirejs = require('requirejs');
-
-requirejs.config({
-    baseUrl : __dirname + '/../',
-    nodeRequire : require,
-    paths : {
-        jquery : 'lib/jquery'
+require.config({
+    baseUrl: '../../',
+    paths: {
+        jquery: 'lib/jquery'
+    },
+    shim: {
+        jquery: {
+            exports: '$'
+        }
     }
 });
 
-requirejs(tests, function() {
+require(specs, function() {
     if (typeof mocha !== 'undefined') {
       mocha.run();
     }

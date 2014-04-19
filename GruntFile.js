@@ -79,8 +79,11 @@ module.exports = function(grunt) {
 
         open: {
             dev: {
-              path: 'http://localhost:<%= opts.port %>',
-              app: 'Google Chrome'
+                path: 'http://localhost:<%= opts.port %>',
+                app: 'Google Chrome',
+                options: {
+                    openOn: 'serverListening'
+                }
             }
         }
     });
@@ -91,7 +94,9 @@ module.exports = function(grunt) {
         server({
             port: 2012
         });
+
+        grunt.event.emit('serverListening');
     });
 
-    grunt.registerTask('test', ['server-start', 'watch']);
+    grunt.registerTask('test', ['open:dev', 'server-start', 'watch']);
 };
