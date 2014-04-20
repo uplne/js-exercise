@@ -1,7 +1,7 @@
 {
   "name": "js-exercise",
   "version": "0.0.1",
-  "description": "Test driven JS exercise",
+  "description": "Test driven JS exercises",
   "homepage": "http://blog.steveis.guru",
   "main": "GruntFile.js",
   "author": {
@@ -20,7 +20,6 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-nodemon": "~0.2.0",
     "grunt-open": "~0.2.3",
-    "grunt-mocha-cli": "~1.7.0",
     "mocha": "~1.18.2",
     "chai": "~1.9.1",
     "matchdep": "~0.3.0",

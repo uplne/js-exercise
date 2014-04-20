@@ -4,6 +4,9 @@
  */
 module.exports = function(grunt) {
 
+    // Define server port
+    var port = 2012;
+
     // Load all grunt tasks
     require('matchdep').filterDev(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks);
 
@@ -17,58 +20,26 @@ module.exports = function(grunt) {
         // Default directories
         dir: {
             exams: 'exams',
-            test: 'tests'
+            tests: 'tests'
         },
-
-        // Default options
-        opts: {
-            port: '2012'
-        },
-
-        /**
-        * Set banner
-        */
-        banner: '/**\n' +
-        '<%= pkg.title %> - <%= pkg.version %>\n' +
-        '<%= pkg.homepage %>\n' +
-        'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
-        'License: Enjoy. Live long and prosper.\n' +
-        '*/\n',
 
         /**
         * JSHint
         * @github.com/gruntjs/grunt-contrib-jshint
         */
         jshint: {
-          gruntfile: 'Gruntfile.js',
-          files: ['<%= dir.js %>/**/*.js'],
-          options: {
-            jshintrc: '.jshintrc'
-          }
-        },
-
-        // Server side unit tests
-        mochacli: {
+            all: [
+                '<%= dir.exams %>/**/*.js',
+                '<%= dir.exams %>/**/*.js',
+                'Gruntfile.js'
+            ],
             options: {
-                ui: "tdd",
-                reporter: "spec",
-                timeout: "15000"
-            },
-
-            unit: {
-                src: ["static/js/tests/unit/**/*.js"]
+              jshintrc: '.jshintrc'
             }
         },
 
-        // The watch command watches a given set of files and runs a task when one of them changes.
+        // Watch for changes in exam files and reload
         watch: {
-            server: {
-                files: ['.rebooted'],
-                options: {
-                    livereload: true
-                }
-            },
-
             scripts: {
                 files: 'exams/**/*.js',
                 options: {
@@ -77,9 +48,10 @@ module.exports = function(grunt) {
             }
         },
 
+        // Auto open browser window when event emitted
         open: {
             dev: {
-                path: 'http://localhost:<%= opts.port %>',
+                path: 'http://localhost:' + port,
                 app: 'Google Chrome',
                 options: {
                     openOn: 'serverListening'
@@ -88,15 +60,18 @@ module.exports = function(grunt) {
         }
     });
 
+    // Start server task
     grunt.registerTask('server-start', 'Start test server', function() {
         var server = require('./test-server.js');
 
         server({
-            port: 2012
+            port: port
         });
 
+        // Emit event to open browser window/tab
         grunt.event.emit('serverListening');
     });
 
+    // Main exam task
     grunt.registerTask('test', ['open:dev', 'server-start', 'watch']);
 };
