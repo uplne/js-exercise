@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         jshint: {
             all: [
                 '<%= dir.exams %>/**/*.js',
-                '<%= dir.exams %>/**/*.js',
+                '<%= dir.tests %>/**/*.js',
                 'Gruntfile.js'
             ],
             options: {
