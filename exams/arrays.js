@@ -24,7 +24,7 @@ define(function() {
 
         },
 
-        truncate: function(arr) {
+        pop: function(arr) {
 
         },
 
@@ -32,7 +32,7 @@ define(function() {
 
         },
 
-        curtail: function(arr) {
+        shift: function(arr) {
 
         },
 
