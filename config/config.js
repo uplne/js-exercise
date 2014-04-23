@@ -1,7 +1,7 @@
-'use strict';
-
 var specs = [
-  'tests/specs/arrays'
+  'tests/specs/arrays',
+  'tests/specs/fizzBuzz',
+  'tests/specs/logicalOperators'
 ];
 
 require.config({
