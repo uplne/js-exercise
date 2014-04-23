@@ -1,20 +1,7 @@
-/*requirejs.config({
-    baseUrl: __dirname + '/../',
-    paths: {
-        jquery : 'lib/jquery'
-    }
-});*/
-
-/*requirejs(tests, function() {
-    if (typeof mocha !== 'undefined') {
-      mocha.run();
-    }
-});*/
-
-'use strict';
-
 var specs = [
-  'tests/specs/arrays'
+  'tests/specs/arrays',
+  'tests/specs/fizzBuzz',
+  'tests/specs/logicalOperators'
 ];
 
 require.config({
